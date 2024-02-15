@@ -1,0 +1,34 @@
+[package]
+name = "ungrammar-gen"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+ungrammar-extra = { path="../ungrammar-extra" }
+
+eyre = "0.6.12"
+heck = "0.4.1"
+
+proc-macro2 = "1.0.78"
+quote = "1.0.35"
+
+ungrammar = "1.16.1"
+once_cell = "1.19.0"
+
+
+[dev-dependencies]
+ungrammar-extra = { path="../ungrammar-extra" }
+ungrammar-extra-derive = { path="../ungrammar-extra-derive" }
+
+#diagnostics = "0.1.0"
+cstree = { version = "0.12", features = ["derive", "multi_threaded_interning"] }
+lasso = { version = "0.7", features = ["multi-threaded", "ahasher"] }
+
+[dev-dependencies.text]
+git = "https://github.com/SparkyPotato/yam"
+rev = "ff948ab"
+
+[dev-dependencies.diagnostics]
+git = "https://github.com/SparkyPotato/yam"
+rev = "ff948ab"
