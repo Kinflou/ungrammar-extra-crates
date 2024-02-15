@@ -1,0 +1,7 @@
+// Basic Calculator
+// Syntax: 1 + 1
+//
+
+Expr = lhs:Literal op:InfixOperator rhs:Literal
+InfixOperator = '+' | '-'
+Literal = 'int' | 'float'

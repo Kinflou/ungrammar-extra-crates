@@ -1,0 +1,5 @@
+# JetBrains IDEA settings
+.idea/
+
+# Cargo
+/target

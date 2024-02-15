@@ -1,0 +1,18 @@
+[package]
+name = "ungrammar-extra-derive"
+version = "0.1.0"
+edition = "2021"
+
+
+[lib]
+proc-macro = true
+
+
+[dependencies]
+eyre = "0.6.12"
+virtue = "0.0.16"
+
+[dev-dependencies]
+logos = "0.14.0"
+ungrammar-extra = { path="../ungrammar-extra" }
+once_cell = "1.19.0"
