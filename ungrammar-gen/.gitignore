@@ -3,5 +3,4 @@
 
 
 # Tests temporary output
-tests/_temp_/
-
+/tests/_temp_
