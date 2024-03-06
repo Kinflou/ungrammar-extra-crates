@@ -1,0 +1,4 @@
+# Consider these rules
+# https://rust-lang.github.io/rustfmt/?version=v1.7.0&search=imports#group_imports
+# https://rust-lang.github.io/rustfmt/?version=v1.7.0&search=imports#imports_granularity
+

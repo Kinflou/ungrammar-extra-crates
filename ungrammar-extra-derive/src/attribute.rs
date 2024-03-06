@@ -68,6 +68,7 @@ pub fn parse_tokens_info_attribute(
     }))
 }
 
+/*
 fn backtick(x: &str) -> String {
     let mut s = String::with_capacity(x.len() + 2);
     s.push('`');
@@ -75,3 +76,4 @@ fn backtick(x: &str) -> String {
     s.push('`');
     s
 }
+*/
