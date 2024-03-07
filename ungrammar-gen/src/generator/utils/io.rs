@@ -16,7 +16,7 @@ pub fn write_generated(out: &Path, file: &str, uses: Option<Uses>, content: Stri
 
 	if let Some(uses) = uses {
 		if uses.mods.len() > 0 {
-			text += "// Relative Modules";
+			text += "// Relative Modules\n";
 			for r#mod in uses.mods { text += &*format!("pub mod {};\n", r#mod) }
 			text += "\n";
 		}
@@ -46,8 +46,12 @@ pub fn write_generated(out: &Path, file: &str, uses: Option<Uses>, content: Stri
 }
 
 fn write(file: PathBuf, contents: String) {
+	if file.file_name().is_none() {
+		panic!("Given path has to be a file path.\nPath: {}", file.display());
+	}
+
 	std::fs::write(&file, contents)
-		.with_context(|| format!("Could not write into file: {}", file.display()))
+		.with_context(|| format!("Could not write into file at: \n{}", file.display()))
 		.unwrap();
 
 	super::format::format(&file);

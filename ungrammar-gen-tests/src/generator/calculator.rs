@@ -1,5 +1,5 @@
 // Standard Uses
-use std::path::Path;
+use std::{io::Write, path::Path};
 
 // External Uses
 use ungrammar_extra_derive::SyntaxKind;
@@ -28,12 +28,21 @@ fn parse_calculator_ungrammar_and_generate_code() {
 		FloatLit,
 	}
 
-	let grammar_path = Path::new("tests/_data_/calculator.ungram");
-	let output_path = Path::new("tests/_temp_/generator/calculator/");
+	std::fs::OpenOptions::new().append(true).open("tests/mod.rs")
+		.unwrap()
+		.write_all(b"mod generator;\n").unwrap();
+
+    std::fs::create_dir_all(Path::new("tests/generator/")).ok();
+    std::fs::write(
+        "tests/generator/mod.rs", "mod calculator;"
+    ).unwrap();
+
+	let grammar_path = Path::new("_data_/calculator.ungram");
+	let output_path = Path::new("tests/generator/calculator/");
 
 	if !output_path.exists() {
 		std::fs::create_dir_all(output_path).unwrap();
 	}
 
-	generator::from_path::<SyntaxKind>(&grammar_path, &output_path).unwrap();
+	generator::from_path::<SyntaxKind, TokenKind>(&grammar_path, &output_path).unwrap();
 }

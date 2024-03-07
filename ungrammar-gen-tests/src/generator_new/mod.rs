@@ -4,6 +4,8 @@ use std::path::Path;
 // External Uses
 use ungrammar_extra_derive::SyntaxKind;
 
+
+
 #[test]
 fn generate_with_macroed_token_kind_enum() {
 	#[allow(unused)]
@@ -13,8 +15,8 @@ fn generate_with_macroed_token_kind_enum() {
 		StringLit,
 	}
 
-	let grammar_path = Path::new("tests/_data_/calculator.ungram");
-	let output_path = Path::new("tests/_temp_/generator_new/calculator/");
+	let grammar_path = Path::new("_data_/calculator.ungram");
+	let output_path = Path::new("tests/generator_new/calculator/");
 
 	if !output_path.exists() {
 		std::fs::create_dir_all(output_path).unwrap();
