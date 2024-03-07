@@ -35,6 +35,7 @@ impl DeriveEnum {
 
     fn generate_syntax_kind_enum(&self, generator: &mut Generator) -> Result<()> {
         let mut kind_enum = generator.generate_enum("SyntaxKind");
+        let kind_enum = kind_enum.make_pub();
 
         for variant in &self.variants {
             kind_enum.add_value(variant.name.to_string()).make_zst();

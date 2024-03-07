@@ -92,15 +92,18 @@ pub struct Enum {
 pub struct Generator<'a, M: KindsMetaInfo> {
 	grammar: &'a Grammar,
 	pub node_types: HashMap<Node, NodeType>,
+
+	token_kind_namespace: String,
 	meta: PhantomData<M>,
 }
 
 impl<'a, M: KindsMetaInfo + 'static> Generator<'a, M> {
-	pub fn new(grammar: &'a Grammar) -> Self {
+	pub fn new(grammar: &'a Grammar, token_kind_namespace: String) -> Self {
 		Self {
 			grammar,
 			node_types: HashMap::new(),
 			meta: Default::default(),
+			token_kind_namespace
 		}
 	}
 
@@ -113,8 +116,9 @@ impl<'a, M: KindsMetaInfo + 'static> Generator<'a, M> {
 			"token.rs",
 			Some(Uses {
 				mods: vec![],
-				std: vec!["super::{*, nodes::*}".to_owned()],
-				krate: vec![],
+				std: vec![],
+				//krate: vec!["super::{*, nodes::*}".to_owned()],
+				krate: vec!["super::*".to_owned()],
 				external: vec!["diagnostics::FileSpan".to_owned()]
 			}),
 			self.gen_tokens(),
@@ -124,13 +128,15 @@ impl<'a, M: KindsMetaInfo + 'static> Generator<'a, M> {
 			"ast.rs",
 			Some(Uses {
 				mods: vec![],
-				std: vec!["super::{*, token::*, nodes::*, blanket_impls}".to_owned()],
-				krate: vec![],
+				std: vec![],
+				//krate: vec!["super::{*, token::*, nodes::*, blanket_impls}".to_owned()],
+				krate: vec!["super::{*, token::*}".to_owned()],
 				external: vec!["diagnostics::FileSpan".to_owned()] 
 			}),
 			super::ast::generate_ast(&mut self),
 		);
 
+		self.gen_blanket_impls(out);
 		self.gen_ast_traits(out);
 	}
 
@@ -139,7 +145,7 @@ impl<'a, M: KindsMetaInfo + 'static> Generator<'a, M> {
 			.grammar
 			.tokens()
 			.map(|n| map_token::<M>(&self.grammar[n].name))
-			.chain(["Whitespace", "Comment", "Error"].map(|s| (s.to_ascii_lowercase(), s.to_string())))
+			//.chain(["Whitespace", "Comment", "Error"].map(|s| (s.to_ascii_lowercase(), s.to_string())))
 			.collect();
 
 		let node_kinds: Vec<_> = self
@@ -182,13 +188,15 @@ impl<'a, M: KindsMetaInfo + 'static> Generator<'a, M> {
 				}
 			}
 		};
-
+		
+		let token_kind_name: proc_macro2::TokenStream = self.token_kind_namespace.parse().unwrap();
+		//let token_kind_name: syn::Type = syn::parse_str(&*self.token_kind_namespace).unwrap();
 		let from = quote! {
-			impl From<lex::token::TokenKind> for SyntaxKind {
-				fn from(kind: lex::token::TokenKind) -> Self {
+			impl From<#token_kind_name> for SyntaxKind {
+				fn from(kind: #token_kind_name) -> Self {
 					match kind {
-						#(lex::token::TokenKind::#token_kinds => Self::#token_kinds,)*
-						lex::token::TokenKind::Eof => Self::Eof,
+						#(#token_kind_name::#token_kinds => Self::#token_kinds,)*
+						#token_kind_name::Eof => Self::Eof,
 					}
 				}
 			}

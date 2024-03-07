@@ -18,7 +18,8 @@ impl<'a, M: KindsMetaInfo + 'static> Generator<'a, M> {
 			Some(Uses { 
                     mods: vec![
                         "token".to_string(), "kind".to_string(),
-                        "ast".to_string(), "nodes".to_string(), "blanket_impls".to_string()
+                        "ast".to_string(), //"nodes".to_string(), 
+                        "blanket_impls".to_string()
                     ],
                     std: vec![],
                     krate: vec!["kind::SyntaxKind".to_string()],

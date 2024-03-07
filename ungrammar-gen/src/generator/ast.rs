@@ -138,8 +138,12 @@ fn generate_enum<'a, M: KindsMetaInfo>(generator: &mut Generator<'a, M>, e: Enum
 
 		impl AstElement for #name {
 			fn can_cast(kind: SyntaxKind) -> bool {
-				matches!(kind, #(| SyntaxKind::#token_variants)* #(| SyntaxKind::#struct_variants)*)
-				#(|| #enum_variants::can_cast(kind))*
+				matches!(
+					kind,
+					#(| SyntaxKind::#token_variants)*
+					#(| SyntaxKind::#struct_variants)*
+				)
+					#(|| #enum_variants::can_cast(kind))*
 			}
 
 			fn cast(elem: SyntaxElement) -> Option<Self> {

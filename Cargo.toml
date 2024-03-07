@@ -1,4 +1,4 @@
 [workspace]
 resolver = "2"
-members = ["ungrammar-gen", "ungrammar-extra", "ungrammar-extra-derive"]
+members = ["ungrammar-gen", "ungrammar-extra", "ungrammar-extra-derive", "ungrammar-gen-tests"]
 
