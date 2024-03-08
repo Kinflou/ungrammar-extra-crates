@@ -9,26 +9,7 @@ use ungrammar_gen::generator;
 
 #[test]
 fn parse_calculator_ungrammar_and_generate_code() {
-	#[allow(unused)]
-	#[derive(SyntaxKind)]
-	enum TokenKind {
-		#[syntax(lit="string", desc="String")]
-		StringLit,
-
-		#[syntax(lit="+", desc="Plus")]
-		PlusOp,
-
-		#[syntax(lit="-", desc="Minus")]
-		MinusOp,
-	
-		#[syntax(lit="int", desc="Integer")]
-		IntLit,
-
-		#[syntax(lit="float", desc="Float")]
-		FloatLit,
-	}
-
-	std::fs::OpenOptions::new().append(true).open("tests/mod.rs")
+	std::fs::OpenOptions::new().create(true).append(true).open("tests/mod.rs")
 		.unwrap()
 		.write_all(b"mod generator;\n").unwrap();
 
@@ -45,4 +26,23 @@ fn parse_calculator_ungrammar_and_generate_code() {
 	}
 
 	generator::from_path::<SyntaxKind, TokenKind>(&grammar_path, &output_path).unwrap();
+}
+
+#[allow(unused)]
+#[derive(SyntaxKind)]
+pub enum TokenKind {
+	#[syntax(lit="string", desc="String")]
+	StringLit,
+
+	#[syntax(lit="+", desc="Plus")]
+	PlusOp,
+	
+	#[syntax(lit="-", desc="Minus")]
+	MinusOp,
+
+	#[syntax(lit="int", desc="Integer")]
+	IntLit,
+	
+	#[syntax(lit="float", desc="Float")]
+	FloatLit,
 }
