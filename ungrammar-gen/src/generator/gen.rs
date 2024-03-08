@@ -110,10 +110,22 @@ impl<'a, M: KindsMetaInfo + 'static> Generator<'a, M> {
 	pub fn generate(mut self, out: &Path) {
 		self.init_node_types();
 
-		io::write_generated(out, "kind.rs", None, self.gen_kinds());
+		let token_kind_name = self.token_kind_namespace.parse().unwrap();
+		// let token_kind_name: proc_macro2::TokenStream = self.token_kind_namespace.parse().unwrap();
+		//let token_kind_name: syn::Type = syn::parse_str(&*self.token_kind_namespace).unwrap();
+		
 		io::write_generated(
-			out,
-			"token.rs",
+			out, "kind.rs",
+			Some(Uses {
+				mods: vec![],
+				std: vec![],
+				krate: vec![token_kind_name],
+				external: vec![],
+			}),
+			self.gen_kinds()
+		);
+		io::write_generated(
+			out, "token.rs",
 			Some(Uses {
 				mods: vec![],
 				std: vec![],
@@ -124,8 +136,7 @@ impl<'a, M: KindsMetaInfo + 'static> Generator<'a, M> {
 			self.gen_tokens(),
 		);
 		io::write_generated(
-			out,
-			"ast.rs",
+			out, "ast.rs",
 			Some(Uses {
 				mods: vec![],
 				std: vec![],
@@ -188,15 +199,14 @@ impl<'a, M: KindsMetaInfo + 'static> Generator<'a, M> {
 				}
 			}
 		};
-		
-		let token_kind_name: proc_macro2::TokenStream = self.token_kind_namespace.parse().unwrap();
-		//let token_kind_name: syn::Type = syn::parse_str(&*self.token_kind_namespace).unwrap();
+
+
 		let from = quote! {
-			impl From<#token_kind_name> for SyntaxKind {
-				fn from(kind: #token_kind_name) -> Self {
+			impl From<TokenKind> for SyntaxKind {
+				fn from(kind: TokenKind) -> Self {
 					match kind {
-						#(#token_kind_name::#token_kinds => Self::#token_kinds,)*
-						#token_kind_name::Eof => Self::Eof,
+						#(TokenKind::#token_kinds => Self::#token_kinds,)*
+						TokenKind::Eof => Self::Eof,
 					}
 				}
 			}
