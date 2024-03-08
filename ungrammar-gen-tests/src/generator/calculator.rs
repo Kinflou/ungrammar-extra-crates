@@ -2,7 +2,6 @@
 use std::{io::Write, path::Path};
 
 // External Uses
-use ungrammar_extra_derive::SyntaxKind;
 use ungrammar_gen::generator;
 
 
@@ -25,24 +24,5 @@ fn parse_calculator_ungrammar_and_generate_code() {
 		std::fs::create_dir_all(output_path).unwrap();
 	}
 
-	generator::from_path::<SyntaxKind, TokenKind>(&grammar_path, &output_path).unwrap();
-}
-
-#[allow(unused)]
-#[derive(SyntaxKind)]
-pub enum TokenKind {
-	#[syntax(lit="string", desc="String")]
-	StringLit,
-
-	#[syntax(lit="+", desc="Plus")]
-	PlusOp,
-	
-	#[syntax(lit="-", desc="Minus")]
-	MinusOp,
-
-	#[syntax(lit="int", desc="Integer")]
-	IntLit,
-	
-	#[syntax(lit="float", desc="Float")]
-	FloatLit,
+	generator::from_path::<super::SyntaxKind, super::TokenKind>(&grammar_path, &output_path).unwrap();
 }

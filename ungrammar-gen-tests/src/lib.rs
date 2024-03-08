@@ -1,4 +1,3 @@
-#[cfg(test)]
 pub mod generator;
 
 #[cfg(test)]
