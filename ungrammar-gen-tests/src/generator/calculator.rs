@@ -1,5 +1,8 @@
 // Standard Uses
-use std::{io::Write, path::Path};
+use std::path::Path;
+
+// Crate Uses
+use super::GENERATED_CODE_PATH;
 
 // External Uses
 use ungrammar_gen::generator;
@@ -8,20 +11,13 @@ use ungrammar_gen::generator;
 
 #[test]
 fn parse_calculator_ungrammar_and_generate_code() {
-	std::fs::OpenOptions::new().create(true).append(true).open("tests/mod.rs")
-		.unwrap()
-		.write_all(b"mod generator;\n").unwrap();
-
-    std::fs::create_dir_all(Path::new("tests/generator/")).ok();
-    std::fs::write(
-        "tests/generator/mod.rs", "mod calculator;"
-    ).unwrap();
-
+	super::setup_generation();
+	
 	let grammar_path = Path::new("_data_/calculator.ungram");
-	let output_path = Path::new("tests/generator/calculator/");
+	let output_path = GENERATED_CODE_PATH.join("generator/calculator/");
 
 	if !output_path.exists() {
-		std::fs::create_dir_all(output_path).unwrap();
+		std::fs::create_dir_all(&output_path).unwrap();
 	}
 
 	generator::from_path::<super::SyntaxKind, super::TokenKind>(&grammar_path, &output_path).unwrap();

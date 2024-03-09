@@ -1,2 +1,6 @@
-# Tests directory (its generated on build and tests)
+# Tests and Generations directory (its generated on build and tests)
 tests/
+generated/
+
+# Cargo exclusions
+target/
