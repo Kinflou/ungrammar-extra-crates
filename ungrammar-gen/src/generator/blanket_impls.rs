@@ -32,7 +32,7 @@ impl<'a, M: KindsMetaInfo + 'static> Generator<'a, M> {
                 
             }),
 			indoc::indoc! {r#"
-                pub fn default_span(token: SyntaxToken) -> FileSpan {
+                pub fn default_span(token: &SyntaxToken) -> FileSpan {
                     let range = token.text_range();
                     FileSpan {
                         start: range.start().into(),

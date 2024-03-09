@@ -4,4 +4,4 @@
 
 Expr = lhs:Literal op:InfixOperator rhs:Literal
 InfixOperator = '+' | '-'
-Literal = 'int' | 'float'
+Literal = 'int' | 'float' | 'string'

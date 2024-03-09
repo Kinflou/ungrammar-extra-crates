@@ -206,7 +206,6 @@ impl<'a, M: KindsMetaInfo + 'static> Generator<'a, M> {
 				fn from(kind: TokenKind) -> Self {
 					match kind {
 						#(TokenKind::#token_kinds => Self::#token_kinds,)*
-						TokenKind::Eof => Self::Eof,
 					}
 				}
 			}
@@ -247,7 +246,7 @@ impl<'a, M: KindsMetaInfo + 'static> Generator<'a, M> {
 								Self::can_cast(tok.kind()).then(|| Self(tok))
 							}
 
-							fn span(&self) -> FileSpan { blanket_impls::default_span(self.0) }
+							fn span(&self) -> FileSpan { blanket_impls::default_span(&self.0) }
 
 							fn inner(self) -> SyntaxElement { self.0.into() }
 						}
